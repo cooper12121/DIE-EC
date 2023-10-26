@@ -1,3 +1,4 @@
+
 ## DIE-EC
 
 
@@ -12,15 +13,15 @@ The main train process require the mentions pairs and embeddings from each set.<
 
 #### constrcut RST trees and Lexical chains
     We first construct RST tress for each documents, When generate mention pair, we construct cross-document lexical chains.
-#### WEC-Eng
-Since WEC-Eng train set contains many mentions, generating all negative pairs is very resource and time consuming.
- To that end, we added a control for the negative:positive ratio.<br/> 
+#### WEC-Eng and WEC-Zh
+Since WEC-Eng/WEC-Zh train set contains many mentions, generating all negative pairs is very resource and time consuming.
+To that end, we added a control for the negative:positive ratio.<br/> 
  ```
 #>python src/preprocess_gen_pairs.py
 ```
 
 ### Generate Embeddings
-To generate the embeddings for WEC-Eng run the following script and provide the slit files location, for example:<br/>
+To generate the embeddings for WEC-Eng/WEC-Zh run the following script and provide the slit files location, for example:<br/>
 ```
 #>python src/preprocess_embed.py 
 ```
@@ -33,7 +34,7 @@ We use the generated embeddings to initialize node<br/>
 See `train.py` file header for the complete set of script parameters.
 Model file will be saved at output folder (for each iteration that improves).
 
-- For training over WEC-Eng:<br/>
+- For training over WEC-Eng/WEC-Zh:<br/>
 ```
 #> python src/train.py
 ```
