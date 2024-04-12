@@ -13,6 +13,10 @@ Options:
 """
 #用于生成edu的编码，初始化gat的节点
 
+""" 
+1.23修改记录：进行修辞关系的消融。
+"""
+
 
 
 import multiprocessing
@@ -90,7 +94,7 @@ class EduEmbedModel():
 		device_ids=[0,1]
 		
 		if self.use_cuda:
-			device = torch.device('cuda:{}'.format(device_ids[0]))#主gpu,输出时汇总梯度
+			device = torch.device('cuda:{}'.format(device_ids[1]))#主gpu,输出时汇总梯度
 			self.device=device
 			# self.model=torch.nn.DataParallel(model,device_ids=device_ids,output_device=device_ids[0])
 			self.model.to(device)

@@ -18,13 +18,29 @@ class GAT(nn.Module):
                  negative_slope=0.2,
                  residual=False,
                  activation=None,
-                 allow_zero_in_degree=False,
+                 allow_zero_in_degree=True,
                  bias=True,
                  share_weights=False,
                  ):
         super().__init__()
-        self.conv1 = GATv2Conv(in_feats, hid_feats // num_heads, num_heads)
-        self.conv2 = GATv2Conv(hid_feats, hid_feats, num_heads)  # hid*number模型自己会做
+        self.conv1 = GATv2Conv(in_feats, hid_feats // num_heads, num_heads,
+                feat_drop=0.5,
+                 attn_drop=0.5,
+                 negative_slope=0.2,
+                 residual=True,
+                 activation=True,
+                 allow_zero_in_degree=True,
+                 bias=True,
+                 share_weights=False,)
+        self.conv2 = GATv2Conv(hid_feats, hid_feats, num_heads,
+                               feat_drop=0.5,
+                 attn_drop=0.5,
+                 negative_slope=0.2,
+                 residual=True,
+                 activation=True,
+                 allow_zero_in_degree=True,
+                 bias=True,
+                 share_weights=False,)  # hid*number模型自己会做
         self.projection = nn.Linear(hid_feats, out_feats)
         self.hid_feats = hid_feats
         self.num_heads=num_heads

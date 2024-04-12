@@ -35,8 +35,9 @@ from src.utils.embed_utils import EmbedFromFile
 from src.preprocess_edu_embed import EmbedNodeHidden
 
 logger = logging.getLogger(__name__)
-MAX_ALLOWED_BATCH_SIZE = 500
+MAX_ALLOWED_BATCH_SIZE = 200
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 def generate_pred_matrix(inference_model, topic):
     all_pairs = list(product(topic.mentions, repeat=2))#两两组队
@@ -84,15 +85,23 @@ def predict_and_save():
 
 
 def get_pairwise_model():
-    pairwize_model = torch.load(_model_file,map_location={'cuda:0':'cuda:1'})
+    device = torch.device("cuda:0" if torch.cuda.is_available()else "cpu")
+
+
+    # pairwize_model = torch.load(_model_file,map_location={'cuda:1':'cuda:0'})#默认存在哪个卡加载时就会加载到哪个卡，因此需要转
+    pairwize_model = torch.load(_model_file,map_location=torch.device("cpu"))#默认存在哪个卡加载时就会加载到哪个卡，因此需要转
+    # pairwize_model = torch.load(_model_file,map_location=lambda storage, loc: storage.cuda(0))#默认存在哪个卡加载时就会加载到哪个卡，因此需要转
+    # pairwize_model = torch.load(_model_file,map_location=device)#要用torch.device包装
+
+    if _use_cuda:
+        # pairwize_model.cuda()
+        pairwize_model.to(device)
+
     pairwize_model.set_embed_utils(EmbedFromFile([_embed_file]))
 
     pairwize_model.set_embed_node(embed_node)
 
-    device = torch.device("cuda:1" if torch.cuda.is_available()else "cpu")
-    if _use_cuda:
-        # pairwize_model.cuda()
-        pairwize_model.to(device)
+   
 
     pairwize_model.eval()
     return pairwize_model
@@ -106,8 +115,8 @@ if __name__ == '__main__':
     argv=['--tmf','../datasets/WEC-Eng/final_processed/Test_Event_gold_mentions_validated.json',
           '--tef','../datasets/WEC-Eng/final_processed/embed/Test_Event_gold_mentions_validated_roberta_large.pickle',
           '--ten','../datasets/WEC-Eng/final_processed/gat_embed/Test_Event_gold_mentions_validated_roberta_large.pickle',
-          '--mf','../checkpoints/wec_pairwise_modeldev_ratio_-1_lr_4e-05_batch_512_noRST_iter_10.pickle',
-          '--out','../model/pair_pred.pickle',
+          '--mf','../checkpoints/wec_pairwise_modeldev_ratio_-1_iter_10.pickle',
+          '--out','../model/rhetorical/pair_pred_no_Elaboration.pickle',
           ]
     _arguments = docopt(__doc__, argv=argv, help=True, version=None, options_first=False)
     print(_arguments)

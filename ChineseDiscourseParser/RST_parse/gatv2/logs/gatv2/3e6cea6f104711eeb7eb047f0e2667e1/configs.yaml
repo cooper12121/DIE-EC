@@ -1,0 +1,380 @@
+dataset:
+  computed: <labml_nn.graphs.gat.experiment.CoraDataset object at 0x000001C626A23460>
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: dataset
+  options:
+  - cora_dataset
+  order: 0
+  type: <class 'labml_nn.graphs.gat.experiment.CoraDataset'>
+  value: null
+device:
+  computed: cpu
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device
+  options: []
+  order: 2
+  type: <class 'torch.device'>
+  value: null
+device.cuda_device:
+  computed: 0
+  is_explicitly_specified: false
+  is_hyperparam: false
+  is_meta: null
+  name: cuda_device
+  options: []
+  order: 3
+  type: <class 'int'>
+  value: null
+device.device:
+  computed: cpu
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device
+  options:
+  - _device
+  order: 0
+  type: <class 'torch.device'>
+  value: null
+device.device_info:
+  computed: CPU
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device_info
+  options:
+  - _device_info
+  order: 1
+  type: <class 'labml_helpers.device.DeviceInfo'>
+  value: null
+device.use_cuda:
+  computed: true
+  is_explicitly_specified: false
+  is_hyperparam: false
+  is_meta: null
+  name: use_cuda
+  options: []
+  order: 2
+  type: <class 'bool'>
+  value: null
+dropout:
+  computed: 0.7
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: dropout
+  options: []
+  order: 10
+  type: <class 'float'>
+  value: 0.7
+epochs:
+  computed: 1000
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: epochs
+  options: []
+  order: 4
+  type: <class 'int'>
+  value: null
+in_features:
+  computed: 1433
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: in_features
+  options:
+  - <lambda>
+  order: 6
+  type: <class 'int'>
+  value: null
+include_edges:
+  computed: true
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: include_edges
+  options: []
+  order: 1
+  type: <class 'bool'>
+  value: null
+loss_func:
+  computed: CrossEntropyLoss()
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: loss_func
+  options: []
+  order: 13
+  type: <class 'torch.nn.modules.loss.CrossEntropyLoss'>
+  value: null
+model:
+  computed: "GATv2(\n  (layer1): GraphAttentionV2Layer(\n    (linear_l): Linear(in_features=1433,\
+    \ out_features=64, bias=False)\n    (linear_r): Linear(in_features=1433, out_features=64,\
+    \ bias=False)\n    (attn): Linear(in_features=8, out_features=1, bias=False)\n\
+    \    (activation): LeakyReLU(negative_slope=0.2)\n    (softmax): Softmax(dim=1)\n\
+    \    (dropout): Dropout(p=0.7, inplace=False)\n  )\n  (activation): ELU(alpha=1.0)\n\
+    \  (output): GraphAttentionV2Layer(\n    (linear_l): Linear(in_features=64, out_features=7,\
+    \ bias=False)\n    (linear_r): Linear(in_features=64, out_features=7, bias=False)\n\
+    \    (attn): Linear(in_features=7, out_features=1, bias=False)\n    (activation):\
+    \ LeakyReLU(negative_slope=0.2)\n    (softmax): Softmax(dim=1)\n    (dropout):\
+    \ Dropout(p=0.7, inplace=False)\n  )\n  (dropout): Dropout(p=0.7, inplace=False)\n\
+    )"
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: model
+  options:
+  - gat_model
+  - gat_v2_model
+  order: 5
+  type: <class 'labml_nn.graphs.gat.experiment.GAT'>
+  value: null
+n_classes:
+  computed: 7
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: n_classes
+  options:
+  - <lambda>
+  order: 8
+  type: <class 'int'>
+  value: null
+n_heads:
+  computed: 8
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: n_heads
+  options: []
+  order: 9
+  type: <class 'int'>
+  value: null
+n_hidden:
+  computed: 64
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: n_hidden
+  options: []
+  order: 7
+  type: <class 'int'>
+  value: null
+optimizer:
+  computed: "Adam (\nParameter Group 0\n    betas: (0.9, 0.999)\n    eps: 1e-08\n\
+    \    lr: 0.005\n    weight_decay: 0.0005\n)"
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: optimizer
+  options:
+  - _optimizer
+  order: 12
+  type: <class 'torch.optim.adam.Adam'>
+  value: null
+optimizer.amsgrad:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: amsgrad
+  options: []
+  order: 1
+  type: <class 'bool'>
+  value: null
+optimizer.betas:
+  computed:
+  - 0.9
+  - 0.999
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: betas
+  options: []
+  order: 4
+  type: typing.Tuple[float, float]
+  value: null
+optimizer.d_model:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: d_model
+  options: []
+  order: -1
+  type: <class 'int'>
+  value: null
+optimizer.degenerate_to_sgd:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: degenerate_to_sgd
+  options: []
+  order: -1
+  type: <class 'bool'>
+  value: null
+optimizer.eps:
+  computed: 1.0e-08
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: eps
+  options: []
+  order: 5
+  type: <class 'float'>
+  value: null
+optimizer.learning_rate:
+  computed: 0.005
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: learning_rate
+  options: []
+  order: 3
+  type: <class 'float'>
+  value: 0.005
+optimizer.momentum:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: momentum
+  options: []
+  order: -1
+  type: <class 'float'>
+  value: null
+optimizer.optimized_adam_update:
+  computed: true
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: optimized_adam_update
+  options: []
+  order: 6
+  type: <class 'bool'>
+  value: null
+optimizer.optimizer:
+  computed: "Adam (\nParameter Group 0\n    betas: (0.9, 0.999)\n    eps: 1e-08\n\
+    \    lr: 0.005\n    weight_decay: 0.0005\n)"
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: optimizer
+  options:
+  - SGD
+  - Adam
+  - AdamW
+  - RAdam
+  - AdaBelief
+  - Noam
+  - AdamWarmupCosineDecay
+  order: 0
+  type: <class 'torch.optim.adam.Adam'>
+  value: Adam
+optimizer.parameters:
+  computed: <generator object Module.parameters at 0x000001C626A08510>
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: parameters
+  options: []
+  order: 2
+  type: <built-in function any>
+  value: <generator object Module.parameters at 0x000001C626A08510>
+optimizer.rectify:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: rectify
+  options: []
+  order: -1
+  type: <class 'bool'>
+  value: null
+optimizer.total_steps:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: total_steps
+  options: []
+  order: -1
+  type: <class 'int'>
+  value: null
+optimizer.warmup:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: warmup
+  options: []
+  order: -1
+  type: <class 'int'>
+  value: null
+optimizer.weight_decay:
+  computed: 0.0005
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: weight_decay
+  options: []
+  order: 8
+  type: <class 'float'>
+  value: 0.0005
+optimizer.weight_decay_absolute:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: weight_decay_absolute
+  options: []
+  order: 10
+  type: <class 'bool'>
+  value: null
+optimizer.weight_decay_obj:
+  computed: <labml_nn.optimizers.WeightDecay object at 0x000001C626A23550>
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: weight_decay_obj
+  options:
+  - L2
+  order: 7
+  type: <class 'labml_nn.optimizers.WeightDecay'>
+  value: null
+optimizer.weight_decouple:
+  computed: true
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: weight_decouple
+  options: []
+  order: 9
+  type: <class 'bool'>
+  value: null
+share_weights:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: share_weights
+  options: []
+  order: 11
+  type: <class 'bool'>
+  value: null
+training_samples:
+  computed: 500
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: training_samples
+  options: []
+  order: 3
+  type: <class 'int'>
+  value: null

@@ -2,6 +2,7 @@ import math
 import torch
 from torch import nn
 import os,sys
+import traceback
 root_path = os.path.abspath(__file__)
 
 root_path = '/'.join(root_path.split('/')[:-3]) #windows 用\
@@ -32,7 +33,7 @@ class PairWiseModelKenton(nn.Module):
         
         # self.arguments_pairwize=self.get_sequential(3*f_in_dim,f_hid_dim)
         self.gat = GAT(in_feats=embed_node.get_embed_size(),out_feats=embed_node.get_embed_size())#输出的特征数与pairwise的hidden特征数相同,因为需要要做拼接，而拼接时mention的hidden为embed_size而不是hid-dim
-        self.device = torch.device("cuda:1" if torch.cuda.is_available()else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available()else "cpu")
 
         self.RST = RST#消融实验时使用
         self.lexical_chain = Lexical_chain
@@ -78,7 +79,7 @@ class PairWiseModelKenton(nn.Module):
             node_features1.append(node_hidden1)
         hidden_node_features1 = torch.tensor(node_features1,requires_grad=True).view(batch_size,-1).to(self.device)#[batch,hidden]
 
-        batched_graph2,graphs2 = self.construct_graph(mentions2,hiddens_node2)
+        batched_graph2,graphs2 = self.construct_graph(mentions2,hiddens_node2)#这里建图出错了，500个mention，建了499个图
         output2 = self.gat(batched_graph2,batched_graph2.ndata['feat'])
         # graphs = dgl.unbatch(batched_graph1)
         node_features2=[]
@@ -100,12 +101,13 @@ class PairWiseModelKenton(nn.Module):
         graphs = []
         for i,mention in enumerate(mentions):
             try:
-
                 graph = Graph(mention.graph_info_list,mention.edu_list,mention.mention_node_index,hidden_nodes[i]).G
                 g = dgl.add_self_loop(graph).to(self.device)
                 graphs.append(g)
             except Exception as e:
-                print(e)
+                traceback.print_exc()
+                print(e,i,len(graphs))
+                #第220个样本出错
         batched_graph = dgl.batch(graphs).to(self.device)
         return batched_graph,graphs
 
@@ -168,19 +170,19 @@ class PairWiseModelKenton(nn.Module):
         att1_head = hidden1_reshape * att1_soft.reshape(batch_size, max_ment_span, 1)#torch.mul,broadcast调整维度后对应元素相乘
         att2_head = hidden2_reshape * att2_soft.reshape(batch_size, max_ment_span, 1)  #[batch,max_span,hidden]
         
-        if not self.RST:
-            g1 = torch.cat((first1_tok, last1_tok, torch.sum(att1_head, dim=1)), dim=1)#[batch,3*hidden],first_token:[batch,hidden]
-            g2 = torch.cat((first2_tok, last2_tok, torch.sum(att2_head, dim=1)), dim=1)
-            span1_span2 = g1 * g2  #g1,g2，就是mention的第一个，最后一个以及mention拼接的结果
-            concat_result = torch.cat((g1, g2, span1_span2), dim=1) #最后把所有的参数信息都在这里拼接[batch,9*hidden]
+        # if not self.RST:
+        #     g1 = torch.cat((first1_tok, last1_tok, torch.sum(att1_head, dim=1)), dim=1)#[batch,3*hidden],first_token:[batch,hidden]
+        #     g2 = torch.cat((first2_tok, last2_tok, torch.sum(att2_head, dim=1)), dim=1)
+        #     span1_span2 = g1 * g2  #g1,g2，就是mention的第一个，最后一个以及mention拼接的结果
+        #     concat_result = torch.cat((g1, g2, span1_span2), dim=1) #最后把所有的参数信息都在这里拼接[batch,9*hidden]
 
-        else:
+        # else:
         #拼接gat的信息
-            hidden_node_features1,hidden_node_features2 = self.get_node_rep(batch_features,batch_size)#[batch,hidden]
-            g1 = torch.cat((first1_tok,last1_tok,torch.sum(att1_head,dim=1),hidden_node_features1),dim=1)#[batch,4*hidden]
-            g2 = torch.cat((first2_tok,last2_tok,torch.sum(att2_head,dim=1),hidden_node_features2),dim=1)#[batch,4*hidden]
-            span1_span2 = g1 * g2  #g1,g2，就是mention的第一个，最后一个以及mention拼接的结果[batch,4*hidden]
-            concat_result = torch.cat((g1, g2, span1_span2), dim=1) #最后把所有的参数信息都在这里拼接[batch,12*hidden]
+        hidden_node_features1,hidden_node_features2 = self.get_node_rep(batch_features,batch_size)#[batch,hidden]
+        g1 = torch.cat((first1_tok,last1_tok,torch.sum(att1_head,dim=1),hidden_node_features1),dim=1)#[batch,4*hidden]
+        g2 = torch.cat((first2_tok,last2_tok,torch.sum(att2_head,dim=1),hidden_node_features2),dim=1)#[batch,4*hidden]
+        span1_span2 = g1 * g2  #g1,g2，就是mention的第一个，最后一个以及mention拼接的结果[batch,4*hidden]
+        concat_result = torch.cat((g1, g2, span1_span2), dim=1) #最后把所有的参数信息都在这里拼接[batch,12*hidden]
 
 
 

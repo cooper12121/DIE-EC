@@ -1,0 +1,15 @@
+comment: ''
+commit: unknown
+commit_message: ''
+is_dirty: false
+load_run: null
+name: gatv2
+notes: ''
+python_file: E:\direction\EE\sota_end2end_parser\RST_parse\gatv2\gat.py
+repo_remotes: []
+start_step: 0
+tags:
+- gatv2
+trial_date: '2023-06-21'
+trial_time: '23:21:07'
+uuid: 3e6cea6f104711eeb7eb047f0e2667e1

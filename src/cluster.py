@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     
     argv=['--tmf','./datasets/WEC-Eng/final_processed/Test_Event_gold_mentions_validated.json',
-          '--predictions','./model/pair_pred_model.pickle','--alt',0.9]
+          '--predictions','./model/pair_pred_model.pickle','--alt',0.85]
     _arguments = docopt(__doc__, argv=argv, help=True, version=None, options_first=False)
     print(_arguments)
     _mentions_file = _arguments.get("--tmf")

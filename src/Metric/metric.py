@@ -98,13 +98,18 @@ def ceaf(predicted_clusters, gold_clusters):
     scores = np.zeros((len(predicted_clusters), len(gold_clusters)))
     for j in range(len(gold_clusters)):
         for i in range(len(predicted_clusters)):
-            scores[i, j] = len(set(predicted_clusters[i]) & set(gold_clusters[j]))
+            # scores[i, j] = len(set(predicted_clusters[i]) & set(gold_clusters[j]))
+            scores[i, j] = 2*( len(set(predicted_clusters[i]) & set(gold_clusters[j])) )/(len(set(predicted_clusters[i]))+len(set(gold_clusters[j])))
     indexs = linear_sum_assignment(scores, maximize=True)
     max_correct_mentions = sum(
         [scores[indexs[0][i], indexs[1][i]] for i in range(indexs[0].shape[0])]
     )
-    precision = max_correct_mentions / len(sum(predicted_clusters, []))
-    recall = max_correct_mentions / len(sum(gold_clusters, []))
+    # ped = sum(predicted_clusters,[])
+    # god = sum(gold_clusters,[])
+    # precision = max_correct_mentions / len(sum(predicted_clusters, []))
+    # recall = max_correct_mentions / len(sum(gold_clusters, []))
+    precision = max_correct_mentions / len(predicted_clusters)
+    recall = max_correct_mentions / len(gold_clusters)
     f1 = get_f1(precision, recall)
     global ceaf_f1
     ceaf_f1=f1

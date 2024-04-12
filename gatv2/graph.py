@@ -37,13 +37,25 @@ class Graph:
             dst = []
             for edge in self.graph_info_list:
                 if edge[0][0]==None or edge[0][1]==None:continue
+
+                # Elaboration，Background,Temporal,Attribution
+                #未做： Same-Unit, Joint, 
+                #去除某些修辞关系对应的边，不能直接去掉，这样可能会丢失顶点，把两个顶点都变成自环即可
+                rhetorical="Attribution"
+                if len(edge)==3 and edge[1][1]==rhetorical:#只加自环边
+                    src.append(edge[0][0]-1)
+                    dst.append(edge[0][0]-1)
+
+                    src.append(edge[0][1]-1)
+                    dst.append(edge[0][1]-1)
+
                 src.append(edge[0][0]-1)#减一节点编号从1开始
                 dst.append(edge[0][1]-1)
             src = torch.tensor(src,dtype=torch.int32)
             dst = torch.tensor(dst,dtype=torch.int32)
             self.G = dgl.graph((src, dst), idtype=torch.int32)
         except Exception as e:
-            print(e)
+            print("build_graph error",e)
 
     def graph_visualization(self,):
         # %matplotlib inline jupyter
@@ -70,7 +82,7 @@ class Graph:
         embed = nn.Embedding(node_nubmers, self.node_features)  # 34 nodes with embedding dim equal to,随机初始化
         
         for i in range(self.edu_node_hidden.shape[0]):
-            embed.weight.data[edu2node[i]] = self.edu_node_hidden[i]
+            embed.weight.data[edu2node[i]] = self.edu_node_hidden[i]#出错了
         self.G.ndata['feat'] = embed.weight #随机初始化，把对应的节点填充，或者初始化为0？
 
     def add_edge_features(self):
@@ -84,15 +96,18 @@ class Graph:
         # print('We have %d nodes.' % self.G.number_of_nodes())
         # print('We have %d edges.' % self.G.number_of_edges())
         # self.graph_visualization()
-        self.add_node_features()
+        self.add_node_features()#出错了
         self.add_edge_features()
         # print("done")
 def process_graphinfo_list(graph_info_list):
-    for i in range(len(graph_info_list)):
-        if len(graph_info_list[i])==2:
-            graph_info_list[i]=[graph_info_list[i]]
-    # print(graph_info_list)
-    return graph_info_list
+    try:
+        for i in range(len(graph_info_list)):
+            if len(graph_info_list[i])==2:
+                graph_info_list[i]=[graph_info_list[i]]
+        # print(graph_info_list)
+        return graph_info_list
+    except Exception as e:
+        print("process_graph_error",e)
 #      graph = Graph()
 # #     in_feats = graph.node_features
 # #     model = GAT(in_feats, 128, 1, 2)
