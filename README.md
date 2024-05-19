@@ -4,7 +4,7 @@ project for paper [Enhancing Cross-Document Event Coreference Resolution by Disc
 <p align="center">
     <br>
     <img src="./coling2024.png" width="800"/>
-    <br>A
+    <br>
 </p>
 
 ## Prerequisites
