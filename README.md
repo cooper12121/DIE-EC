@@ -1,7 +1,11 @@
 
 ## DIE-EC
-
-
+project for paper [Enhancing Cross-Document Event Coreference Resolution by Discourse Structure and Semantic Information](https://aclanthology.org/2024.lrec-main.523/) (LREC-COLING 2024))
+<p align="center">
+    <br>
+    <img src="./coling2024.png" width="800"/>
+    <br>A
+</p>
 
 ## Prerequisites
 - Python 3.8 
