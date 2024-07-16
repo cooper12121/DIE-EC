@@ -61,7 +61,7 @@ def process_data(data):
                     text = ""
             if i != ".": sentences.append(text)  # 不以.结尾的情况
             # token_start, token_end = doc['tokens_number'][0], doc['tokens_number'][-1]
-            tree = construct_rst(sentences)[0]  # 一般只有一个树，有多个时取第一个
+            tree = construct_rst(sentences)[0]  
             graph_info_list, edu_list, rel_list, type_list = order_tree(tree)
             if len(graph_info_list)==0:continue
             if len(edu_list) == 1 and isinstance(edu_list[0], tuple):
@@ -90,8 +90,8 @@ def calculate_event2edu(edu_list, doc):
     for i, edu in enumerate(edu_list):
         if edu != None and not isinstance(edu, int):
             notNone_edu_list.append(edu)
-            edu_index.append(i)  # 非0edu对应的node
-    # 对edu分词判断其范围
+            edu_index.append(i)  
+    
     index = 0
     str_text = []
     range_list = []
@@ -108,7 +108,7 @@ def calculate_event2edu(edu_list, doc):
         print(traceback.print_exc())
     # assert doc['mention_context'][start:end + 1] == str_text[start:end + 1]
     start, end = doc['tokens_number'][0], doc['tokens_number'][-1]
-    edu_number = 0  # 非0edu的位置
+    edu_number = 0  
     for i in range(len(range_list)):
         if range_list[i][0] <= start and end <= range_list[i][1]:
             edu_number = i
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     readfile("./RST_parse/data_process/ecb+/")
 
 '''
-问题处理：用.分割句子存在问题  A.A.E.E 某些单词用.连接，这种情况怎么考虑,应该再拼接句子时考虑
+
 '''
 # def test():
 #     l = ['In', '1993', ',', 'Lench', 'Mob', 'member', ',', 'J-Dee', ',', 'was', 'sentenced', 'to', 'life', 'imprisonment', 'for', 'attempted', 'murder', ',', 'and', 'Ice', 'Cube', 'did', 'not', 'produce', 'their', 'next', 'album', ',', "''", 'Planet', 'of', 'tha', 'Apes', "''", '.', 'Around', 'this', 'time', 'in', '1993', ',', 'he', 'also', 'worked', 'with', 'Tupac', 'Shakur', 'on', 'his', 'album', "''", 'Strictly', '4', 'My', 'N.I.G.G.A.Z.', ',', "''", 'appearing', 'on', 'the', 'track', '"', 'Last', 'Wordz', '"', 'with', 'Ice-T', '.', 'He', 'also', 'did', 'a', 'song', 'with', 'Dr.', 'Dre', 'for', 'the', 'first', 'time', 'since', 'he', 'left', 'N.W.A', ':', '"', 'Natural', 'Born', 'Killaz', '"', ',', 'for', 'the', "''", 'Murder', 'Was', 'The', 'Case', "''", 'soundtrack']
