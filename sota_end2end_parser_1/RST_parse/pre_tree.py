@@ -19,10 +19,7 @@ class tree:
 
 
 def preorder_traversal(root, parent):
-    # 遍历过程已经按方向保存了信息，故不用再后续便利了
-
-
-    # 为了防止出现非连通图，是否应该把N这条边设置成双向
+   
     global node_index
     if root is not None:
         root = RST_tree(rel=root.rel, type_=root.type, temp_edu=root.temp_edu, l_ch=root.left_child,
@@ -32,18 +29,17 @@ def preorder_traversal(root, parent):
         root.node_index = node_index + 1
         node_index += 1
         if root.type != "Root":
-            # edu_index=node_index,这样寻找mention所在edu时可直接对应node_index，然后再将edu中的none去除后加入seq送入encoder即可
-            # if root.type!="Root":#不行，要保留下所有的节点信息，根是自环
-            if root.type == "S" or root.type == "Sz":  # 卫星，由孩子指向父亲，root自环
+            # edu_index=node_index,
+            if root.type == "S" or root.type == "Sz": 
                 src_tuple = (root.node_index, parent.node_index)
                 rel_tuple = (root.type, root.rel, parent.type)
-            else:  # NN不用考虑,把N看成双向可否？
-                if (parent.left_child and parent.left_child.type == "N") and(parent.right_child and parent.right_child.type == "N"):  # 双向
+            else: 
+                if (parent.left_child and parent.left_child.type == "N") and(parent.right_child and parent.right_child.type == "N"): 
                     src_tuple = (root.node_index, parent.node_index)
                     rel_tuple = (root.type, root.rel, parent.type)
                     if src_tuple[0]!=None and src_tuple[1]!=None:
                         graph_info_list.append([src_tuple, rel_tuple, ("temp_edu:", root.temp_edu)])
-                src_tuple = (parent.node_index, root.node_index)#parent的type是针对所有子树而言的，并不是与孩子间的关系，故不用考虑parent与root之间的关系
+                src_tuple = (parent.node_index, root.node_index)
                 rel_tuple = (parent.type, root.rel, root.type)
             if src_tuple[0] != None and src_tuple[1] != None:
                 graph_info_list.append(
@@ -115,11 +111,7 @@ def order_tree(tree):
     edu_list, rel_list, type_list = [], [], []
     graph_info_list = []
     '''
-    rst树的结构应该要用后序遍历？#
-    #其次RST关系的左右方向，是的，因为RST树是自底向上构造。由卫星指向核心
-    #即对于父节点：左孩子是核心，父指向左孩子；右孩子是卫星，右孩子指向父节点：则最终就有一条右孩子指向左孩子的路径
-    # tree=RST_tree(is_leaf=False,rel=tree.rel,type_=tree.type,temp_edu=tree.temp_edu,l_ch=tree.left_child,r_ch=tree.right_child)
-    #先先序遍历分配所有，再后续遍历得到图吧'''
+    
     parent = RST_tree(rel=tree.rel, type_=tree.type, temp_edu=tree.temp_edu, l_ch=tree.left_child,
                       r_ch=tree.right_child)
     preorder_traversal(tree, parent)  # postorder_traversal(tree,tree)
